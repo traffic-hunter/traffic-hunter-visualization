@@ -1,5 +1,5 @@
-import { apiClient } from '../../core/api/client'
-import type { User, CreateUserDto, UpdateUserDto } from './types'
+import { apiClient } from "@core/api/client"
+import type { User, CreateUserDto, UpdateUserDto } from '@features/users/types'
 
 export interface IUserRepository {
   getUser(id: string): Promise<User>

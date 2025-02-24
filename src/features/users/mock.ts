@@ -1,6 +1,8 @@
 import { http, HttpResponse } from 'msw'
-import { mockUserRepository } from './repository'
-import type { CreateUserDto, UpdateUserDto } from './types'
+import { mockUserRepository } from '@features/users/repository'
+import { CreateUserDto, UpdateUserDto } from '@features/users/types'
+
+
 
 export const userHandlers = [
   // GET /users
