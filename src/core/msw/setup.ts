@@ -1,12 +1,11 @@
 import type { SetupWorker } from 'msw/browser'
 import type { HttpHandler } from 'msw'
-import { handlers } from './handlers'
 
 export class MockServiceWorker {
   private static instance: MockServiceWorker
   private worker: SetupWorker | null = null
   private isInitialized = false
-  private handlers: HttpHandler[] = handlers
+  private handlers: HttpHandler[] = []
 
   private constructor() {}
 
@@ -35,7 +34,7 @@ export class MockServiceWorker {
         onUnhandledRequest: 'bypass'
       })
       this.isInitialized = true
-      console.info('MSW initialized successfully with', this.handlers.length, 'handlers')
+      console.info('MSW initialized successfully')
     } catch (error) {
       console.error('Failed to initialize MSW:', error)
       throw error
@@ -46,8 +45,11 @@ export class MockServiceWorker {
     return this.worker
   }
 
-  public getHandlers(): HttpHandler[] {
-    return this.handlers
+  public addHandlers(handlers: HttpHandler[]): void {
+    this.handlers.push(...handlers)
+    if (this.worker) {
+      this.worker.resetHandlers(...this.handlers)
+    }
   }
 
   public async stop(): Promise<void> {

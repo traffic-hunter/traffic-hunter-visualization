@@ -1,4 +1,4 @@
-import { apiClient } from '../../api/client'
+import { apiClient } from '../../core/api/client'
 import type { User, CreateUserDto, UpdateUserDto } from './types'
 
 export interface IUserRepository {
