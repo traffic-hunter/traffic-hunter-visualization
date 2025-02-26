@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
-import { mockUserRepository } from '@features/users/repository'
 import { CreateUserDto, UpdateUserDto } from '@features/users/types'
+import { mockUserRepository } from '@features/users/repository'
 
 
 
