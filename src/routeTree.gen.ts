@@ -13,6 +13,8 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as UsersImport } from './routes/users'
 import { Route as IndexImport } from './routes/index'
+import { Route as MembersSignupImport } from './routes/members/signup'
+import { Route as MembersLoginImport } from './routes/members/login'
 
 // Create/Update Routes
 
@@ -25,6 +27,18 @@ const UsersRoute = UsersImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MembersSignupRoute = MembersSignupImport.update({
+  id: '/members/signup',
+  path: '/members/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const MembersLoginRoute = MembersLoginImport.update({
+  id: '/members/login',
+  path: '/members/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +60,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersImport
       parentRoute: typeof rootRoute
     }
+    '/members/login': {
+      id: '/members/login'
+      path: '/members/login'
+      fullPath: '/members/login'
+      preLoaderRoute: typeof MembersLoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/members/signup': {
+      id: '/members/signup'
+      path: '/members/signup'
+      fullPath: '/members/signup'
+      preLoaderRoute: typeof MembersSignupImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +82,46 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/users': typeof UsersRoute
+  '/members/login': typeof MembersLoginRoute
+  '/members/signup': typeof MembersSignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/users': typeof UsersRoute
+  '/members/login': typeof MembersLoginRoute
+  '/members/signup': typeof MembersSignupRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/users': typeof UsersRoute
+  '/members/login': typeof MembersLoginRoute
+  '/members/signup': typeof MembersSignupRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/users'
+  fullPaths: '/' | '/users' | '/members/login' | '/members/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/users'
-  id: '__root__' | '/' | '/users'
+  to: '/' | '/users' | '/members/login' | '/members/signup'
+  id: '__root__' | '/' | '/users' | '/members/login' | '/members/signup'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   UsersRoute: typeof UsersRoute
+  MembersLoginRoute: typeof MembersLoginRoute
+  MembersSignupRoute: typeof MembersSignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   UsersRoute: UsersRoute,
+  MembersLoginRoute: MembersLoginRoute,
+  MembersSignupRoute: MembersSignupRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +135,9 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/users"
+        "/users",
+        "/members/login",
+        "/members/signup"
       ]
     },
     "/": {
@@ -105,6 +145,12 @@ export const routeTree = rootRoute
     },
     "/users": {
       "filePath": "users.tsx"
+    },
+    "/members/login": {
+      "filePath": "members/login.tsx"
+    },
+    "/members/signup": {
+      "filePath": "members/signup.tsx"
     }
   }
 }

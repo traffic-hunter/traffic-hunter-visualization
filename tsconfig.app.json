@@ -30,7 +30,12 @@
       "@/*": ["./src/*"],
       "@core/*": ["./src/core/*"],
       "@features/*": ["./src/features/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@utils/*": ["./src/lib/utils/*"],
+      "@ui/*": ["./src/components/ui/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src"]
