@@ -28,7 +28,7 @@ export class MemberRepository implements IMemberRepository {
   }
 
   async getCurrentMember(): Promise<GetMemberResponse> {
-    return await apiClient.get<GetMemberResponse>(`${this.baseUrl}/me`)
+    return await apiClient.getWithAuth<GetMemberResponse>(`${this.baseUrl}/me`)
   }
 
   async signIn(data: SignInDto): Promise<GetMemberResponse> {
@@ -36,11 +36,11 @@ export class MemberRepository implements IMemberRepository {
   }
 
   async signOut(): Promise<void> {
-    await apiClient.post(`${this.baseUrl}/sign-out`, {})
+    await apiClient.postWithAuth(`${this.baseUrl}/sign-out`, {})
   }
 
   async updateMember(id: string, data: UpdateMemberDto): Promise<void> {
-    await apiClient.put(this.baseUrl, data, {
+    await apiClient.putWithAuth(this.baseUrl, data, {
       headers: {
         Member: id
       }
@@ -48,7 +48,7 @@ export class MemberRepository implements IMemberRepository {
   }
 
   async deleteMember(id: string): Promise<void> {
-    await apiClient.delete(this.baseUrl, {
+    await apiClient.deleteWithAuth(this.baseUrl, {
       headers: {
         Member: id
       }
