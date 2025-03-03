@@ -11,18 +11,11 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as UsersImport } from './routes/users'
 import { Route as IndexImport } from './routes/index'
 import { Route as MembersSignupImport } from './routes/members/signup'
 import { Route as MembersLoginImport } from './routes/members/login'
 
 // Create/Update Routes
-
-const UsersRoute = UsersImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -53,13 +46,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/users': {
-      id: '/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof UsersImport
-      parentRoute: typeof rootRoute
-    }
     '/members/login': {
       id: '/members/login'
       path: '/members/login'
@@ -81,14 +67,12 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/users': typeof UsersRoute
   '/members/login': typeof MembersLoginRoute
   '/members/signup': typeof MembersSignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/users': typeof UsersRoute
   '/members/login': typeof MembersLoginRoute
   '/members/signup': typeof MembersSignupRoute
 }
@@ -96,30 +80,27 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/users': typeof UsersRoute
   '/members/login': typeof MembersLoginRoute
   '/members/signup': typeof MembersSignupRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/users' | '/members/login' | '/members/signup'
+  fullPaths: '/' | '/members/login' | '/members/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/users' | '/members/login' | '/members/signup'
-  id: '__root__' | '/' | '/users' | '/members/login' | '/members/signup'
+  to: '/' | '/members/login' | '/members/signup'
+  id: '__root__' | '/' | '/members/login' | '/members/signup'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  UsersRoute: typeof UsersRoute
   MembersLoginRoute: typeof MembersLoginRoute
   MembersSignupRoute: typeof MembersSignupRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  UsersRoute: UsersRoute,
   MembersLoginRoute: MembersLoginRoute,
   MembersSignupRoute: MembersSignupRoute,
 }
@@ -135,16 +116,12 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/users",
         "/members/login",
         "/members/signup"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/users": {
-      "filePath": "users.tsx"
     },
     "/members/login": {
       "filePath": "members/login.tsx"

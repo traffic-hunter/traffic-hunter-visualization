@@ -2,13 +2,17 @@ import { AuthForm } from "@/features/members/components/AuthForm"
 import { AuthType } from "@/features/members/constants/auth"
 import { FullPageLayout } from "@/components/layout/FullPageLayout"
 import { useAuth } from "@/features/members/hooks/useAuth"
+import { useSearch } from "@tanstack/react-router"
 import type { AuthFormData } from "@/features/members/components/AuthForm"
 
 export default function LoginPage() {
     const { login, isLoading, error } = useAuth()
+    const { redirect } = useSearch({
+        from: '/members/login'
+    })
 
     const handleSubmit = (data: AuthFormData) => {
-        login(data)
+        login(data, redirect)
     }
 
     return (

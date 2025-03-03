@@ -45,6 +45,14 @@ export class MockMemberRepository implements IMemberRepository {
     return this.members.map(member => this.mapMemberToResponse(member))
   }
 
+  async getCurrentMember(): Promise<GetMemberResponse> {
+    const currentUser = mockStorage.get<GetMemberResponse>(MOCK_STORAGE_KEYS.SESSION_USER)
+    if (!currentUser) {
+      throw new Error('Not authenticated')
+    }
+    return currentUser
+  }
+
   async signIn(data: SignInDto): Promise<GetMemberResponse> {
     const member = this.findMemberByEmail(data.email)
     if (!member) {

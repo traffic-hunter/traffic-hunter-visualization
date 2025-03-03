@@ -8,21 +8,49 @@ export function useAuth() {
 
     const loginMutation = useMutation({
         mutationFn: (data: SignInDto) => memberRepository.signIn(data),
-        onSuccess: () => {
-            navigate({ to: "/" })
-        },
+        onSuccess: () => {},
     })
 
     const signupMutation = useMutation({
         mutationFn: (data: CreateMemberDto) => memberRepository.createMember(data),
         onSuccess: () => {
-            navigate({ to: "/members/login" })
+            navigate({ 
+                to: "/members/login",
+                search: {
+                    redirect: undefined
+                }
+            })
         },
     })
 
+    const logout = async () => {
+        try {
+            await memberRepository.signOut()
+            navigate({ 
+                to: "/members/login",
+                search: {
+                    redirect: undefined
+                }
+            })
+        } catch (error) {
+            console.error('Logout failed:', error)
+        }
+    }
+
     return {
-        login: loginMutation.mutate,
+        login: (data: SignInDto, redirect?: string) => {
+            loginMutation.mutate(data, {
+                onSuccess: () => {
+                    if (redirect) {
+                        navigate({ to: redirect })
+                    } else {
+                        navigate({ to: "/" })
+                    }
+                }
+            })
+        },
         signup: signupMutation.mutate,
+        logout,
         isLoading: loginMutation.isPending || signupMutation.isPending,
         error: loginMutation.error || signupMutation.error,
     }

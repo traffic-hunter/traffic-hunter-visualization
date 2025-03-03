@@ -27,6 +27,10 @@ export class MemberRepository implements IMemberRepository {
     return await apiClient.get<GetMemberResponse[]>(this.baseUrl)
   }
 
+  async getCurrentMember(): Promise<GetMemberResponse> {
+    return await apiClient.get<GetMemberResponse>(`${this.baseUrl}/me`)
+  }
+
   async signIn(data: SignInDto): Promise<GetMemberResponse> {
     return await apiClient.post<GetMemberResponse>(`${this.baseUrl}/sign-in`, data)
   }

@@ -17,6 +17,24 @@ export const memberHandlers = [
     }
   }),
 
+  // GET /members/me
+  http.get('/members/me', async () => {
+    try {
+      const response = await mockMemberRepository.getCurrentMember()
+      return new HttpResponse(JSON.stringify(response), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    } catch (error) {
+      return new HttpResponse(null, {
+        status: 401,
+        statusText: error instanceof Error ? error.message : 'Not authenticated'
+      })
+    }
+  }),
+
   // POST /members/sign-in
   http.post('/members/sign-in', async ({ request }) => {
     try {
