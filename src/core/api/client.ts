@@ -63,6 +63,21 @@ export class ApiClient {
     const response = await this.axiosInstance.post<T>(url, data)
     return response.data
   }
+
+  public async put<T>(url: string, data: unknown): Promise<T> {
+    const response = await this.axiosInstance.put<T>(url, data)
+    return response.data
+  }
+
+  public async patch<T>(url: string, data: unknown): Promise<T> {
+    const response = await this.axiosInstance.patch<T>(url, data)
+    return response.data
+  }
+
+  public async delete<T>(url: string): Promise<T> {
+    const response = await this.axiosInstance.delete<T>(url)
+    return response.data
+  }
 }
 
 export const apiClient = ApiClient.getInstance()
