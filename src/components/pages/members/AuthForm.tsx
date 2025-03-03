@@ -13,15 +13,15 @@ export function AuthForm({ type, onSubmit }: AuthFormProps) {
     const texts = AUTH_TEXTS[type];
 
     return (
-        <div className="w-full max-w-[400px] px-4">
+        <div className="w-full max-w-[500px] px-4">
             <Card className="shadow-lg">
-                <CardHeader className="space-y-4 text-center">
+                <CardHeader className="space-y-6 text-center pb-8">
                     <img
-                        src="https://via.placeholder.com/150x60?text=Logo"
+                        src="https://placehold.co/150x60?text=Logo"
                         alt="Traffic Hunter Logo"
-                        className="mx-auto"
+                        className="mx-auto w-[200px] h-auto"
                     />
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                         <h1 className="text-2xl font-semibold text-gray-800">
                             {texts.title}
                         </h1>
@@ -30,21 +30,21 @@ export function AuthForm({ type, onSubmit }: AuthFormProps) {
                         )}
                     </div>
                 </CardHeader>
-                <CardContent>
-                    <form onSubmit={onSubmit} className="space-y-4">
-                        <div className="space-y-2">
+                <CardContent className="pb-8">
+                    <form onSubmit={onSubmit} className="space-y-6">
+                        <div className="space-y-4">
                             <Input
                                 type="email"
                                 placeholder="Email"
-                                className="w-full"
+                                className="w-full h-12"
                             />
                             <Input
                                 type="password"
                                 placeholder="Password"
-                                className="w-full"
+                                className="w-full h-12"
                             />
                         </div>
-                        <Button type="submit" className="w-full" size="lg">
+                        <Button type="submit" className="w-full h-12 mt-6" size="lg">
                             {texts.submitButton}
                         </Button>
                         <div className="text-center text-sm text-gray-500">
