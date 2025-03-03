@@ -22,7 +22,7 @@ export class MockServiceWorker {
       return
     }
 
-    if (import.meta.env.MODE !== 'development') {
+    if (import.meta.env.MODE === 'production') {
       console.info('MSW is disabled in production')
       return
     }
