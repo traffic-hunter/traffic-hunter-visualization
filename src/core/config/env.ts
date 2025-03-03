@@ -10,6 +10,7 @@ export const config = {
   api: {
     url: requiredEnvVar('VITE_API_URL'),
     timeout: 30000,
+    useMock: requiredEnvVar('VITE_USE_MOCK') === 'true',
   },
   auth: {
     tokenKey: 'token',
