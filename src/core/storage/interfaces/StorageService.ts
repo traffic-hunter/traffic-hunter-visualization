@@ -7,6 +7,6 @@ export interface StorageService {
 
 export interface StorageServiceConfig {
   prefix?: string  
-  serialize?: <T>(value: T) => string
-  deserialize?: <T>(value: string) => T
+  serialize?: <T>(value: T) => string 
+  deserialize?: <T>(value: string) => T  
 }

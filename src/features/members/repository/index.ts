@@ -1,12 +1,4 @@
-import type { CreateMemberDto, GetMemberResponse, SignInDto } from '@features/members/types'
+export type { IMemberRepository } from './interfaces/MemberRepository'
 
-export interface IMemberRepository {
-  createMember(data: CreateMemberDto): Promise<void>
-  getMember(id: string): Promise<GetMemberResponse>
-  getMembers(): Promise<GetMemberResponse[]>
-  signIn(data: SignInDto): Promise<GetMemberResponse>
-  signOut(): Promise<void>
-}
-
-export * from './memberRepository'
-export * from './mockRepository'
+export { memberRepository } from './memberRepository'
+export { mockMemberRepository } from './mockRepository'

@@ -1,5 +1,5 @@
-import type { User, CreateUserDto, UpdateUserDto } from '@features/users/types'
-import { IUserRepository } from '.'
+import type { User, CreateUserDto, UpdateUserDto } from '@features/example/types'
+import type { IUserRepository } from './interfaces/UserRepository'
 
 export class MockUserRepository implements IUserRepository {
   private users: User[] = [

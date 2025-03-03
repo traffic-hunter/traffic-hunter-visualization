@@ -1,18 +1,18 @@
-import type { StorageServiceConfig } from '@core/storage'
-import { AbstractStorageService } from '@core/storage/abstracts/AbstractStorageService'
+import type { StorageServiceConfig } from '../interfaces/StorageService'
+import { AbstractStorageService } from '../abstracts/AbstractStorageService'
 
-export class MockStorageService extends AbstractStorageService {
-  private static instance: MockStorageService
+export class LocalStorageService extends AbstractStorageService {
+  private static instance: LocalStorageService
 
   private constructor(config: StorageServiceConfig = {}) {
-    super({ ...config, prefix: config.prefix || 'mock_' })
+    super(config)
   }
 
-  public static getInstance(config?: StorageServiceConfig): MockStorageService {
-    if (!MockStorageService.instance) {
-      MockStorageService.instance = new MockStorageService(config)
+  public static getInstance(config?: StorageServiceConfig): LocalStorageService {
+    if (!LocalStorageService.instance) {
+      LocalStorageService.instance = new LocalStorageService(config)
     }
-    return MockStorageService.instance
+    return LocalStorageService.instance
   }
 
   get<T>(key: string): T | null {
@@ -45,18 +45,22 @@ export class MockStorageService extends AbstractStorageService {
 
   clear(): void {
     try {
-      const keys = Object.keys(localStorage)
-      keys.forEach(key => {
-        if (key.startsWith(this.prefix)) {
-          localStorage.removeItem(key)
-        }
-      })
+      if (this.prefix) {
+        const keys = Object.keys(localStorage)
+        keys.forEach(key => {
+          if (key.startsWith(this.prefix)) {
+            localStorage.removeItem(key)
+          }
+        })
+      } else {
+        localStorage.clear()
+      }
     } catch (error) {
       this.handleError('clear storage', error)
     }
   }
 }
 
-export const mockStorage = MockStorageService.getInstance({
-  prefix: 'mock_traffic_hunter_'
+export const storage = LocalStorageService.getInstance({
+  prefix: 'traffic_hunter_'
 })
