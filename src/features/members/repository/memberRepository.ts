@@ -42,6 +42,14 @@ export class MemberRepository implements IMemberRepository {
       }
     })
   }
+
+  async deleteMember(id: string): Promise<void> {
+    await apiClient.delete(this.baseUrl, {
+      headers: {
+        Member: id
+      }
+    })
+  }
 }
 
 export const memberRepository = MemberRepository.getInstance()

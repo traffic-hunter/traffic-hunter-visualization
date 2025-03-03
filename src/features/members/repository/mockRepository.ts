@@ -77,6 +77,19 @@ export class MockMemberRepository implements IMemberRepository {
     console.log('Mock: Updated member', member)
   }
 
+  async deleteMember(id: string): Promise<void> {
+    this.validateAuthentication()
+
+    const memberIndex = this.members.findIndex(member => member.id === id)
+    if (memberIndex === -1) {
+      throw new Error('Member not found')
+    }
+
+    this.members.splice(memberIndex, 1)
+    this.saveMembersToStorage()
+    console.log('Mock: Deleted member with ID', id)
+  }
+
   private getCurrentUser(): GetMemberResponse | null {
     return mockStorage.get<GetMemberResponse>(MOCK_STORAGE_KEYS.SESSION_USER)
   }

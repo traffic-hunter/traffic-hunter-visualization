@@ -7,4 +7,5 @@ export interface IMemberRepository {
   signIn(data: SignInDto): Promise<GetMemberResponse>
   signOut(): Promise<void>
   updateMember(id: string, data: UpdateMemberDto): Promise<void>
+  deleteMember(id: string): Promise<void>
 }
