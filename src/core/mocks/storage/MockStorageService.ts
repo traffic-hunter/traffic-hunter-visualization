@@ -3,6 +3,7 @@ import { AbstractStorageService } from '@core/storage/abstracts/AbstractStorageS
 
 export class MockStorageService extends AbstractStorageService {
   private static instance: MockStorageService
+  private storage: Map<string, string> = new Map()
 
   private constructor(config: StorageServiceConfig = {}) {
     super({ ...config, prefix: config.prefix || 'mock_' })
@@ -17,7 +18,7 @@ export class MockStorageService extends AbstractStorageService {
 
   get<T>(key: string): T | null {
     try {
-      const value = localStorage.getItem(this.getPrefixedKey(key))
+      const value = this.storage.get(this.getPrefixedKey(key))
       if (!value) return null
       return this.deserialize<T>(value)
     } catch (error) {
@@ -29,7 +30,7 @@ export class MockStorageService extends AbstractStorageService {
   set<T>(key: string, value: T): void {
     try {
       const serialized = this.serialize(value)
-      localStorage.setItem(this.getPrefixedKey(key), serialized)
+      this.storage.set(this.getPrefixedKey(key), serialized)
     } catch (error) {
       this.handleError('set item to storage', error)
     }
@@ -37,7 +38,7 @@ export class MockStorageService extends AbstractStorageService {
 
   remove(key: string): void {
     try {
-      localStorage.removeItem(this.getPrefixedKey(key))
+      this.storage.delete(this.getPrefixedKey(key))
     } catch (error) {
       this.handleError('remove item from storage', error)
     }
@@ -45,10 +46,10 @@ export class MockStorageService extends AbstractStorageService {
 
   clear(): void {
     try {
-      const keys = Object.keys(localStorage)
+      const keys = Array.from(this.storage.keys())
       keys.forEach(key => {
         if (key.startsWith(this.prefix)) {
-          localStorage.removeItem(key)
+          this.storage.delete(key)
         }
       })
     } catch (error) {
