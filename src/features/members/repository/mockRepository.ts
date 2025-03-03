@@ -1,8 +1,8 @@
 import type { Member, CreateMemberDto, GetMemberResponse, SignInDto, UpdateMemberDto } from '@features/members/types'
 import { IMemberRepository } from '.'
 import { MOCK_STORAGE_KEYS } from '@core/mocks/constants'
-import { mockStorage } from '@core/mocks/storage/MockStorageService'
 import { mockIdGenerator } from '@core/mocks/utils/MockIdGenerator'
+import { mockStorage } from '@/core/storage/StorageService'
 
 export class MockMemberRepository implements IMemberRepository {
   private members: Member[] = []

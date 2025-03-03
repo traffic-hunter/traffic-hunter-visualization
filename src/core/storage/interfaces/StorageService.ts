@@ -1,3 +1,5 @@
+import { StorageType } from '../types/StorageType'
+
 export interface StorageService {
   get<T>(key: string): T | null
   set<T>(key: string, value: T): void
@@ -6,7 +8,8 @@ export interface StorageService {
 }
 
 export interface StorageServiceConfig {
-  prefix?: string  
-  serialize?: <T>(value: T) => string 
-  deserialize?: <T>(value: string) => T  
+  prefix?: string
+  storageType?: StorageType
+  serialize?: <T>(value: T) => string
+  deserialize?: <T>(value: string) => T
 }
