@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios'
+import { config } from '../config/env'
 
 export class ApiClient {
   private static instance: ApiClient
@@ -6,8 +7,8 @@ export class ApiClient {
 
   private constructor() {
     this.axiosInstance = axios.create({
-      baseURL: import.meta.env.VITE_API_URL || 'https://api.example.com',
-      timeout: 30000,
+      baseURL: config.api.url,
+      timeout: config.api.timeout,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,12 +27,12 @@ export class ApiClient {
   private setupInterceptors(): void {
     // Request interceptor
     this.axiosInstance.interceptors.request.use(
-      (config: InternalAxiosRequestConfig) => {
-        const token = localStorage.getItem('token')
+      (axiosConfig: InternalAxiosRequestConfig) => {
+        const token = localStorage.getItem(config.auth.tokenKey)
         if (token) {
-          config.headers.Authorization = `Bearer ${token}`
+          axiosConfig.headers.Authorization = `Bearer ${token}`
         }
-        return config
+        return axiosConfig
       },
       (error: AxiosError) => {
         return Promise.reject(error)
