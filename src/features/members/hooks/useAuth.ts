@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query"
 import { memberRepository } from "../repository"
 import { useNavigate } from "@tanstack/react-router"
 import type { CreateMemberDto, SignInDto } from "../types"
+import { toast } from "sonner"
 
 export function useAuth() {
     const navigate = useNavigate()
@@ -14,7 +15,11 @@ export function useAuth() {
     const signupMutation = useMutation({
         mutationFn: (data: CreateMemberDto) => memberRepository.createMember(data),
         onSuccess: () => {
-            navigate({ 
+            toast.success('Registration Completed!', {
+                description: 'Redirecting to login page...',
+                duration: 2000,
+            });
+            navigate({
                 to: "/members/login",
                 search: {
                     redirect: undefined
