@@ -1,20 +1,20 @@
-export interface CreateMemberDto {
+export interface CreateMemberRequestDto {
   email: string
   password: string
 }
 
-export interface SignInDto {
+export interface SignInRequestDto {
   email: string
   password: string
 }
 
-export interface GetMemberResponse {
+export interface GetMemberResponseDto {
   email: string
   isAlarm: boolean
   role: string
 }
 
-export interface UpdateMemberDto {
+export interface UpdateMemberRequestDto {
   email: string
   password: string
   isAlarm: boolean

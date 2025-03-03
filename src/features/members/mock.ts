@@ -1,12 +1,12 @@
 import { http, HttpResponse } from 'msw'
-import { CreateMemberDto, SignInDto, UpdateMemberDto } from '@features/members/types'
+import { CreateMemberRequestDto, SignInRequestDto, UpdateMemberRequestDto } from '@features/members/types'
 import { mockMemberRepository } from '@features/members/repository'
 
 export const memberHandlers = [
   // POST /members
   http.post('/members', async ({ request }) => {
     try {
-      const data = await request.json() as CreateMemberDto
+      const data = await request.json() as CreateMemberRequestDto
       await mockMemberRepository.createMember(data)
       return new HttpResponse(null, { status: 201 })
     } catch (error) {
@@ -38,7 +38,7 @@ export const memberHandlers = [
   // POST /members/sign-in
   http.post('/members/sign-in', async ({ request }) => {
     try {
-      const data = await request.json() as SignInDto
+      const data = await request.json() as SignInRequestDto
       const response = await mockMemberRepository.signIn(data)
       return new HttpResponse(JSON.stringify(response), {
         status: 200,
@@ -114,7 +114,7 @@ export const memberHandlers = [
         })
       }
 
-      const data = await request.json() as UpdateMemberDto
+      const data = await request.json() as UpdateMemberRequestDto
       await mockMemberRepository.updateMember(memberId, data)
       return new HttpResponse(null, { status: 200 })
     } catch (error) {

@@ -1,4 +1,4 @@
-import type { Member, CreateMemberDto, GetMemberResponse, SignInDto, UpdateMemberDto } from '@features/members/types'
+import type { Member, CreateMemberRequestDto, GetMemberResponseDto, SignInRequestDto, UpdateMemberRequestDto } from '@features/members/types'
 import { IMemberRepository } from '.'
 import { MOCK_STORAGE_KEYS } from '@core/mocks/constants'
 import { mockIdGenerator } from '@core/mocks/utils/MockIdGenerator'
@@ -12,7 +12,7 @@ export class MockMemberRepository implements IMemberRepository {
     this.initializeSessionUserIfNeeded()
   }
 
-  async createMember(data: CreateMemberDto): Promise<void> {
+  async createMember(data: CreateMemberRequestDto): Promise<void> {
     const newMember: Member = {
       id: mockIdGenerator.generateMemberId(),
       email: data.email,
@@ -29,7 +29,7 @@ export class MockMemberRepository implements IMemberRepository {
     console.log('Mock: Created member', newMember)
   }
 
-  async getMember(id: string): Promise<GetMemberResponse> {
+  async getMember(id: string): Promise<GetMemberResponseDto> {
     this.validateAuthentication()
 
     const member = this.findMemberById(id)
@@ -40,20 +40,20 @@ export class MockMemberRepository implements IMemberRepository {
     return this.mapMemberToResponse(member)
   }
 
-  async getMembers(): Promise<GetMemberResponse[]> {
+  async getMembers(): Promise<GetMemberResponseDto[]> {
     this.validateAuthentication()
     return this.members.map(member => this.mapMemberToResponse(member))
   }
 
-  async getCurrentMember(): Promise<GetMemberResponse> {
-    const currentUser = mockStorage.get<GetMemberResponse>(MOCK_STORAGE_KEYS.SESSION_USER)
+  async getCurrentMember(): Promise<GetMemberResponseDto> {
+    const currentUser = mockStorage.get<GetMemberResponseDto>(MOCK_STORAGE_KEYS.SESSION_USER)
     if (!currentUser) {
       throw new Error('Not authenticated')
     }
     return currentUser
   }
 
-  async signIn(data: SignInDto): Promise<GetMemberResponse> {
+  async signIn(data: SignInRequestDto): Promise<GetMemberResponseDto> {
     const member = this.findMemberByEmail(data.email)
     if (!member) {
       throw new Error('Member not found')
@@ -71,7 +71,7 @@ export class MockMemberRepository implements IMemberRepository {
     console.log('Mock: User signed out')
   }
 
-  async updateMember(id: string, data: UpdateMemberDto): Promise<void> {
+  async updateMember(id: string, data: UpdateMemberRequestDto): Promise<void> {
     this.validateAuthentication()
 
     const member = this.findMemberById(id)
@@ -98,8 +98,8 @@ export class MockMemberRepository implements IMemberRepository {
     console.log('Mock: Deleted member with ID', id)
   }
 
-  private getCurrentUser(): GetMemberResponse | null {
-    return mockStorage.get<GetMemberResponse>(MOCK_STORAGE_KEYS.SESSION_USER)
+  private getCurrentUser(): GetMemberResponseDto | null {
+    return mockStorage.get<GetMemberResponseDto>(MOCK_STORAGE_KEYS.SESSION_USER)
   }
 
   private loadMembersFromStorage(): void {
@@ -135,7 +135,7 @@ export class MockMemberRepository implements IMemberRepository {
     return this.members.find(member => member.email === email)
   }
 
-  private mapMemberToResponse(member: Member): GetMemberResponse {
+  private mapMemberToResponse(member: Member): GetMemberResponseDto {
     return {
       email: member.email,
       isAlarm: member.isAlarm,

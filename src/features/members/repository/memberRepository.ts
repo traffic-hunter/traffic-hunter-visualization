@@ -1,5 +1,5 @@
 import { apiClient } from "@core/api/client"
-import type { CreateMemberDto, GetMemberResponse, SignInDto, UpdateMemberDto } from '@features/members/types'
+import type { CreateMemberRequestDto, GetMemberResponseDto, SignInRequestDto, UpdateMemberRequestDto } from '@features/members/types'
 import { IMemberRepository } from '.'
 
 export class MemberRepository implements IMemberRepository {
@@ -15,31 +15,31 @@ export class MemberRepository implements IMemberRepository {
     return MemberRepository.instance
   }
 
-  async createMember(data: CreateMemberDto): Promise<void> {
+  async createMember(data: CreateMemberRequestDto): Promise<void> {
     await apiClient.post(this.baseUrl, data)
   }
 
-  async getMember(id: string): Promise<GetMemberResponse> {
-    return await apiClient.get<GetMemberResponse>(`${this.baseUrl}/${id}`)
+  async getMember(id: string): Promise<GetMemberResponseDto> {
+    return await apiClient.get<GetMemberResponseDto>(`${this.baseUrl}/${id}`)
   }
 
-  async getMembers(): Promise<GetMemberResponse[]> {
-    return await apiClient.get<GetMemberResponse[]>(this.baseUrl)
+  async getMembers(): Promise<GetMemberResponseDto[]> {
+    return await apiClient.get<GetMemberResponseDto[]>(this.baseUrl)
   }
 
-  async getCurrentMember(): Promise<GetMemberResponse> {
-    return await apiClient.getWithAuth<GetMemberResponse>(`${this.baseUrl}/me`)
+  async getCurrentMember(): Promise<GetMemberResponseDto> {
+    return await apiClient.getWithAuth<GetMemberResponseDto>(`${this.baseUrl}/me`)
   }
 
-  async signIn(data: SignInDto): Promise<GetMemberResponse> {
-    return await apiClient.post<GetMemberResponse>(`${this.baseUrl}/sign-in`, data)
+  async signIn(data: SignInRequestDto): Promise<GetMemberResponseDto> {
+    return await apiClient.post<GetMemberResponseDto>(`${this.baseUrl}/sign-in`, data)
   }
 
   async signOut(): Promise<void> {
     await apiClient.postWithAuth(`${this.baseUrl}/sign-out`, {})
   }
 
-  async updateMember(id: string, data: UpdateMemberDto): Promise<void> {
+  async updateMember(id: string, data: UpdateMemberRequestDto): Promise<void> {
     await apiClient.putWithAuth(this.baseUrl, data, {
       headers: {
         Member: id
