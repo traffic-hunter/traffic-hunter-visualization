@@ -67,11 +67,6 @@ export class ApiClient {
     data?: ApiError,
     validationErrors?: ValidationErrorDetail[]
   ): CustomApiError {
-    if (status === 401) {
-      const currentPath = window.location.pathname;
-      window.location.href = `/members/login?redirect=${encodeURIComponent(currentPath)}`;
-    }
-
     return new CustomApiError(
       status,
       validationErrors?.length
