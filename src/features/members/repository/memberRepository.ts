@@ -1,5 +1,5 @@
 import { apiClient } from "@core/api/client"
-import type { CreateMemberDto, GetMemberResponse, SignInDto } from '@features/members/types'
+import type { CreateMemberDto, GetMemberResponse, SignInDto, UpdateMemberDto } from '@features/members/types'
 import { IMemberRepository } from '.'
 
 export class MemberRepository implements IMemberRepository {
@@ -33,6 +33,14 @@ export class MemberRepository implements IMemberRepository {
 
   async signOut(): Promise<void> {
     await apiClient.post(`${this.baseUrl}/sign-out`, {})
+  }
+
+  async updateMember(id: string, data: UpdateMemberDto): Promise<void> {
+    await apiClient.put(this.baseUrl, data, {
+      headers: {
+        Member: id
+      }
+    })
   }
 }
 

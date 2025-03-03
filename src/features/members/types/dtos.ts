@@ -13,3 +13,9 @@ export interface GetMemberResponse {
   isAlarm: boolean
   role: string
 }
+
+export interface UpdateMemberDto {
+  email: string
+  password: string
+  isAlarm: boolean
+}

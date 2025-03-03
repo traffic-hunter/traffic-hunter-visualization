@@ -1,4 +1,4 @@
-import type { CreateMemberDto, GetMemberResponse, SignInDto } from '@features/members/types'
+import type { CreateMemberDto, GetMemberResponse, SignInDto, UpdateMemberDto } from '@features/members/types'
 
 export interface IMemberRepository {
   createMember(data: CreateMemberDto): Promise<void>
@@ -6,4 +6,5 @@ export interface IMemberRepository {
   getMembers(): Promise<GetMemberResponse[]>
   signIn(data: SignInDto): Promise<GetMemberResponse>
   signOut(): Promise<void>
+  updateMember(id: string, data: UpdateMemberDto): Promise<void>
 }

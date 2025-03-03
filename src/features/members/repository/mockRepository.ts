@@ -1,4 +1,4 @@
-import type { Member, CreateMemberDto, GetMemberResponse, SignInDto } from '@features/members/types'
+import type { Member, CreateMemberDto, GetMemberResponse, SignInDto, UpdateMemberDto } from '@features/members/types'
 import { IMemberRepository } from '.'
 import { MOCK_STORAGE_KEYS } from '@core/mocks/constants'
 import { mockStorage } from '@core/mocks/storage/MockStorageService'
@@ -16,7 +16,8 @@ export class MockMemberRepository implements IMemberRepository {
     const newMember: Member = {
       id: mockIdGenerator.generateMemberId(),
       email: data.email,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      isAlarm: true
     }
 
     if (this.findMemberByEmail(data.email)) {
@@ -62,6 +63,20 @@ export class MockMemberRepository implements IMemberRepository {
     console.log('Mock: User signed out')
   }
 
+  async updateMember(id: string, data: UpdateMemberDto): Promise<void> {
+    this.validateAuthentication()
+
+    const member = this.findMemberById(id)
+    if (!member) {
+      throw new Error('Member not found')
+    }
+
+    member.email = data.email
+    member.isAlarm = data.isAlarm
+    this.saveMembersToStorage()
+    console.log('Mock: Updated member', member)
+  }
+
   private getCurrentUser(): GetMemberResponse | null {
     return mockStorage.get<GetMemberResponse>(MOCK_STORAGE_KEYS.SESSION_USER)
   }
@@ -83,7 +98,8 @@ export class MockMemberRepository implements IMemberRepository {
       const newMember: Member = {
         id: mockIdGenerator.generateSessionUserId(),
         email: sessionUser.email,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        isAlarm: true
       }
       this.members.push(newMember)
       this.saveMembersToStorage()
@@ -101,7 +117,7 @@ export class MockMemberRepository implements IMemberRepository {
   private mapMemberToResponse(member: Member): GetMemberResponse {
     return {
       email: member.email,
-      isAlarm: true,
+      isAlarm: member.isAlarm,
       role: 'USER'
     }
   }

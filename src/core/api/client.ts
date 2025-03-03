@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosRequestConfig } from 'axios'
 import { config } from '../config/env'
 
 export class ApiClient {
@@ -65,8 +65,8 @@ export class ApiClient {
     return response.data
   }
 
-  public async put<T>(url: string, data: unknown): Promise<T> {
-    const response = await this.axiosInstance.put<T>(url, data)
+  public async put<T>(url: string, data: unknown, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.axiosInstance.put<T>(url, data, config)
     return response.data
   }
 
