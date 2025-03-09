@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { CreateMemberRequestDto, SignInRequestDto, UpdateMemberRequestDto } from '@features/members/types'
 import { mockMemberRepository } from '@features/members/repository'
+import { httpProblemResponseFactory } from '@core/msw/utils/HttpProblemResponseFactory'
 
 export const memberHandlers = [
   // POST /members
@@ -10,10 +11,10 @@ export const memberHandlers = [
       await mockMemberRepository.createMember(data)
       return new HttpResponse(null, { status: 201 })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 400,
-        statusText: error instanceof Error ? error.message : 'Failed to create member'
-      })
+      return httpProblemResponseFactory.badRequest(
+        error instanceof Error ? error.message : 'Failed to create member',
+        '/members'
+      )
     }
   }),
 
@@ -28,10 +29,10 @@ export const memberHandlers = [
         }
       })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: error instanceof Error ? error.message : 'Not authenticated'
-      })
+      return httpProblemResponseFactory.unauthorized(
+        error instanceof Error ? error.message : 'Not authenticated',
+        '/members/me'
+      )
     }
   }),
 
@@ -47,10 +48,10 @@ export const memberHandlers = [
         }
       })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: error instanceof Error ? error.message : 'Invalid credentials'
-      })
+      return httpProblemResponseFactory.unauthorized(
+        error instanceof Error ? error.message : 'Invalid credentials',
+        '/members/sign-in'
+      )
     }
   }),
 
@@ -65,10 +66,10 @@ export const memberHandlers = [
         }
       })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 404,
-        statusText: error instanceof Error ? error.message : 'Member not found'
-      })
+      return httpProblemResponseFactory.notFound(
+        error instanceof Error ? error.message : 'Member not found',
+        `/members/${params.id}`
+      )
     }
   }),
 
@@ -83,10 +84,10 @@ export const memberHandlers = [
         }
       })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: error instanceof Error ? error.message : 'Unauthorized'
-      })
+      return httpProblemResponseFactory.unauthorized(
+        error instanceof Error ? error.message : 'Unauthorized',
+        '/members'
+      )
     }
   }),
 
@@ -96,10 +97,10 @@ export const memberHandlers = [
       await mockMemberRepository.signOut()
       return new HttpResponse(null, { status: 200 })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: error instanceof Error ? error.message : 'Unauthorized'
-      })
+      return httpProblemResponseFactory.unauthorized(
+        error instanceof Error ? error.message : 'Unauthorized',
+        '/members/sign-out'
+      )
     }
   }),
 
@@ -108,20 +109,20 @@ export const memberHandlers = [
     try {
       const memberId = request.headers.get('Member')
       if (!memberId) {
-        return new HttpResponse(null, {
-          status: 400,
-          statusText: 'Member ID is required'
-        })
+        return httpProblemResponseFactory.badRequest(
+          'Member ID is required',
+          '/members'
+        )
       }
 
       const data = await request.json() as UpdateMemberRequestDto
       await mockMemberRepository.updateMember(memberId, data)
       return new HttpResponse(null, { status: 200 })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: error instanceof Error ? error.message : 'Unauthorized'
-      })
+      return httpProblemResponseFactory.unauthorized(
+        error instanceof Error ? error.message : 'Unauthorized',
+        '/members'
+      )
     }
   }),
 
@@ -130,19 +131,19 @@ export const memberHandlers = [
     try {
       const memberId = request.headers.get('Member')
       if (!memberId) {
-        return new HttpResponse(null, {
-          status: 400,
-          statusText: 'Member ID is required'
-        })
+        return httpProblemResponseFactory.badRequest(
+          'Member ID is required',
+          '/members'
+        )
       }
 
       await mockMemberRepository.deleteMember(memberId)
       return new HttpResponse(null, { status: 200 })
     } catch (error) {
-      return new HttpResponse(null, {
-        status: 401,
-        statusText: error instanceof Error ? error.message : 'Unauthorized'
-      })
+      return httpProblemResponseFactory.unauthorized(
+        error instanceof Error ? error.message : 'Unauthorized',
+        '/members'
+      )
     }
   })
 ]

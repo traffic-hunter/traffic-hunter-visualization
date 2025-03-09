@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 import { config } from '../config/env'
+import { handleHttpError } from '../error/handlers/httpErrorHandler'
 
 export class ApiClient {
   private static instance: ApiClient
@@ -18,7 +19,10 @@ export class ApiClient {
   }
 
   private setupInterceptors(): void {
-    this.axiosInstance.interceptors.response.use()
+    this.axiosInstance.interceptors.response.use(
+      (response) => response,
+      handleHttpError
+    )
   }
 
   public static getInstance(): ApiClient {
