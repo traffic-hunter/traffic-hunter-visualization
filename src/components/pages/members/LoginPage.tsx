@@ -4,6 +4,7 @@ import { FullPageLayout } from "@/components/layout/FullPageLayout"
 import { useAuth } from "@/features/members/hooks/useAuth"
 import { useSearch } from "@tanstack/react-router"
 import type { AuthFormData } from "@/features/members/components/AuthForm"
+import { AnimatePresence } from "framer-motion"
 
 export default function LoginPage() {
     const { login, isLoading, error } = useAuth()
@@ -18,12 +19,14 @@ export default function LoginPage() {
     return (
         <FullPageLayout>
             <div className="w-full max-w-[500px] px-4">
-                <AuthForm
-                    type={AuthType.LOGIN}
-                    onSubmit={handleSubmit}
-                    isLoading={isLoading}
-                    error={error?.message}
-                />
+                <AnimatePresence mode="wait">
+                    <AuthForm
+                        type={AuthType.LOGIN}
+                        onSubmit={handleSubmit}
+                        isLoading={isLoading}
+                        error={error?.message}
+                    />
+                </AnimatePresence>
             </div>
         </FullPageLayout>
     )
